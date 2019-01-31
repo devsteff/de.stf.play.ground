@@ -2,8 +2,10 @@ package de.stf.playground.util
 
 import de.stf.playground.data.Type1
 import de.stf.playground.data.Type2
+import jdk.nashorn.internal.objects.NativeArray.forEach
 import org.junit.Assert
 import org.junit.Test
+import java.math.BigDecimal
 
 class UpdateHelperTest {
     @Test
@@ -71,7 +73,7 @@ class UpdateHelperTest {
         // update.field7 = null
         update.field8 = null
         update.field9 = null
-        update._forcedUpdate = arrayListOf("*")
+        update.forcedUpdate = arrayListOf("*")
 
         val current = Type2.getOne()
         Assert.assertNull("field1 not null", update.field1)

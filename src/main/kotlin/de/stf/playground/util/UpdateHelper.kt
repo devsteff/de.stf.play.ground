@@ -5,7 +5,7 @@ import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 
-private const val FORCED_UPDATE_METHOD_NAME = "_forcedUpdate"
+private const val FORCED_UPDATE_METHOD_NAME = "forcedUpdate"
 const val WILDCARD_METHOD = "*"
 
 class UpdateHelper {

@@ -8,7 +8,7 @@ data class Type1(
     var field3: Type2?, // copied
     var field4: IntArray? // copied
 ) {
-    var _forcedUpdate: List<String>? = null
+    var forcedUpdate: List<String>? = null
     var field2: String? = null // copied
     var field5: String? = "Field5" // not copied -> same name but different type
     var field6: Long? = 0 // not copied -> not nullable
@@ -17,7 +17,7 @@ data class Type1(
     var field9: String? = "You can change me"
 
     companion object {
-        val companionField8: Long = 47 // not copied --> static
+        const val companionField8: Long = 47 // not copied --> static
         fun getOne(): Type1 {
             val updateObject = Type1(
                 "Type1 aaa",
@@ -25,7 +25,7 @@ data class Type1(
                 intArrayOf(1, 2, 3)
             )
             updateObject.field2 = null // will be copied because of the _forcedUpdate entry
-            updateObject._forcedUpdate = arrayListOf("field2", "field3")
+            updateObject.forcedUpdate = arrayListOf("field2", "field3")
             return updateObject
         }
     }
