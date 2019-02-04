@@ -1,4 +1,4 @@
-package de.stf.playground.util
+package de.stf.play.ground.util
 
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KMutableProperty

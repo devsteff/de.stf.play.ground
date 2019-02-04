@@ -1,8 +1,8 @@
-package de.stf.playground
+package de.stf.play.ground
 
-import de.stf.playground.data.Type1
-import de.stf.playground.data.Type2
-import de.stf.playground.util.UpdateHelper
+import de.stf.play.ground.data.Type1
+import de.stf.play.ground.data.Type2
+import de.stf.play.ground.util.UpdateHelper
 
 fun main(args: Array<String>) {
     println("\n\n1 to 1\n----------------------------------------------------")

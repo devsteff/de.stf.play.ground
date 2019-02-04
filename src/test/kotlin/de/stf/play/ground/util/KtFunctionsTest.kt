@@ -1,4 +1,4 @@
-package de.stf.playground.util
+package de.stf.play.ground.util
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -139,9 +139,9 @@ class KtFunctionsTest {
     fun companionTest() {
         val xxx = listOf("aa", "ba", "ca").joinToString(",", "", "", 100, "")
         assertEquals("local var", "aa,ba,ca", xxx)
-        assertEquals("companion const", "aa,ba,ca", KtFunctionsTest.xxx)
-        assertEquals("companion val", xxx, KtFunctionsTest.yyy)
-        assertEquals("companion val", xxx, KtFunctionsTest.zzz)
+        assertEquals("companion const", "aa,ba,ca", Companion.xxx)
+        assertEquals("companion val", xxx, yyy)
+        assertEquals("companion val", xxx, zzz)
         assertTrue("in", "ba" in xxx)
         assertTrue("!in", "ab" !in xxx)
     }

@@ -1,4 +1,4 @@
-package de.stf.playground.data
+package de.stf.play.ground.data
 
 import java.time.Instant
 import java.util.Date

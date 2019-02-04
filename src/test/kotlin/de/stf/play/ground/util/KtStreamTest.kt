@@ -1,4 +1,4 @@
-package de.stf.playground.util
+package de.stf.play.ground.util
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -55,11 +55,23 @@ class KtStreamTest {
     companion object {
         val STRING_LIST = listOf("xyz", "a", "b", "ef", "g", "hijk", "d", "hello", "C")
         val CUSTOMER_MAP = mapOf(
-            Pair(Customer(3,"Jack", 25), Address("NANTERRE CT", "77471")),
-            Pair(Customer(8,"Mary", 37), Address("W NORMA ST", "77009")),
-            Pair(Customer(11,"Peter", 18), Address("S NUGENT AVE", "77571")),
-            Pair(Customer(1,"Amos", 23), Address("E NAVAHO TRL", "77449")),
-            Pair(Customer(4,"Craig", 45), Address("AVE N", "77587"))
+            Pair(
+                Customer(3, "Jack", 25),
+                Address("NANTERRE CT", "77471")
+            ),
+            Pair(
+                Customer(8, "Mary", 37),
+                Address("W NORMA ST", "77009")
+            ),
+            Pair(
+                Customer(11, "Peter", 18),
+                Address("S NUGENT AVE", "77571")
+            ),
+            Pair(
+                Customer(1, "Amos", 23),
+                Address("E NAVAHO TRL", "77449")
+            ),
+            Pair(Customer(4, "Craig", 45), Address("AVE N", "77587"))
         )
     }
 }

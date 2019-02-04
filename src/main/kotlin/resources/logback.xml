@@ -28,7 +28,7 @@
     </appender>
     -->
 
-    <logger name="de.stf.playground.util.UpdateHelper" level="trace">
+    <logger name="de.stf.play.ground.util.UpdateHelper" level="trace">
         <appender-ref ref="UPDATE_ROLLING" level="trace" />
     </logger>
 

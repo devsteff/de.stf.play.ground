@@ -1,7 +1,7 @@
-package de.stf.playground.util
+package de.stf.play.ground.util
 
-import de.stf.playground.data.Type1
-import de.stf.playground.data.Type2
+import de.stf.play.ground.data.Type1
+import de.stf.play.ground.data.Type2
 import jdk.nashorn.internal.objects.NativeArray.forEach
 import org.junit.Assert
 import org.junit.Test
@@ -22,7 +22,8 @@ class UpdateHelperTest {
         Assert.assertEquals("field8 not equals", source.field8.toString(), target.field8.toString())
         Assert.assertEquals("field9 not equals", source.field9, target.field9)
 
-        val updated: Type1 = UpdateHelper.update(source, target.copy())
+        val updated: Type1 =
+            UpdateHelper.update(source, target.copy())
         Assert.assertEquals("field1 not equals", source.field1, updated.field1)
         Assert.assertNull("field2 not null", updated.field2) // forced
         Assert.assertEquals("field3 not equals", source.field3, updated.field3)
@@ -49,7 +50,8 @@ class UpdateHelperTest {
         Assert.assertNotEquals("field8 not equals", source.field8, target.field8)
         Assert.assertNotEquals("field9 not equals", source.field9, target.field9)
 
-        val updated: Type2 = UpdateHelper.update(source, target.copy())
+        val updated: Type2 =
+            UpdateHelper.update(source, target.copy())
         Assert.assertEquals("field1 not equals", source.field1, updated.field1)
         Assert.assertNull("field2 not null", updated.field2) // forced
         Assert.assertEquals("field3 not equals", source.field3, updated.field3)
@@ -86,7 +88,8 @@ class UpdateHelperTest {
         Assert.assertNull("field8 not null", update.field8)
         Assert.assertNull("field9 not null", update.field9)
 
-        val updated: Type2 = UpdateHelper.update(update, current)
+        val updated: Type2 =
+            UpdateHelper.update(update, current)
         Assert.assertNull("field1 not null", updated.field1)
         Assert.assertNull("field2 not null", updated.field2)
         Assert.assertNull("field3 not null", updated.field3)
