@@ -1,4 +1,4 @@
-package de.stf.play.ground.util
+package de.stf.play.ground.test
 
 import de.stf.play.ground.SieveAlgorythm
 import org.junit.Assert

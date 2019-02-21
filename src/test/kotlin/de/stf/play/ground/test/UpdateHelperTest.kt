@@ -1,11 +1,9 @@
-package de.stf.play.ground.util
+package de.stf.play.ground.test
 
 import de.stf.play.ground.data.Type1
 import de.stf.play.ground.data.Type2
-import jdk.nashorn.internal.objects.NativeArray.forEach
 import org.junit.Assert
 import org.junit.Test
-import java.math.BigDecimal
 
 class UpdateHelperTest {
     @Test
