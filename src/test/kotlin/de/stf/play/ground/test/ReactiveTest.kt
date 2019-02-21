@@ -1,6 +1,5 @@
 package de.stf.play.ground.test
 
-import org.junit.Assert.*
 import org.junit.Test
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
@@ -9,9 +8,8 @@ import java.util.function.BiFunction
 
 class ReactiveTest {
     @Test
-    fun aTest() {
+    fun fewWords() {
         val fewWords = Flux.just("Hello", "World")
-
         StepVerifier.create(fewWords)
             .expectNext("Hello")
             .expectNextCount(1)
@@ -20,20 +18,21 @@ class ReactiveTest {
     }
 
     @Test
-    fun bTest() {
-        val manyWordsSorted = Flux.fromIterable<String>(words)
+    fun manyWordsSortedTest() {
+        val manyWordsSorted = WORDS
             .sort()
-
         StepVerifier.create(manyWordsSorted)
             .expectNext("brown")
             .expectNextCount(7)
             .expectNext("the")
             .expectComplete()
             .verify()
+    }
 
-        val manyWordsReversedSorted = Flux.fromIterable<String>(words)
+    @Test
+    fun manyWordsReversedSortedTest() {
+        val manyWordsReversedSorted = WORDS
             .sort { o1, o2 -> o1.compareTo(o2) * -1 }
-
         StepVerifier.create(manyWordsReversedSorted)
             .expectNext("the")
             .expectNextCount(7)
@@ -45,23 +44,23 @@ class ReactiveTest {
     @Test
     fun findingMissingLetter() {
         val manyLetters = Flux
-            .fromIterable(words)
+            .fromIterable(WORDS)
             //.log()
             .flatMap { word ->
                 val x = word.split("")
-                Flux.fromIterable(x) }
+                Flux.fromIterable(x)
+            }
             //.log()
             .distinct()
             //.log()
             .sort()
             //.log()
             .zipWith(
-               Flux.range(1, Integer.MAX_VALUE),
-               BiFunction<String, Int, String> { s, c -> String.format("%2d. %s", c, s) }
+                Flux.range(1, Integer.MAX_VALUE),
+                BiFunction<String, Int, String> { s, c -> String.format("%2d. %s", c, s) }
             )
             .map { it }
             .log()
-
         StepVerifier.create(manyLetters)
             .expectNext(" 1. ")
             .expectNext(" 2. a")
@@ -69,17 +68,14 @@ class ReactiveTest {
             .expectNext("26. z")
             .expectComplete()
             .verify()
-
-        //manyLetters.subscribe { println("*** $it") }
     }
 
     @Test
-    fun givenFluxes_whenZipWithIsInvoked_thenZipWith() {
-        val fluxOfIntegers = evenNumbers
+    fun givenFluxes_thenZipWith() {
+        val fluxOfIntegers = EVEN_INT_FLUX
             .log()
-            .zipWith( oddNumbers, BiFunction<Int, Int, Int> { even, odd -> even * odd } )
+            .zipWith(ODD_INT_FLUX, BiFunction<Int, Int, Int> { even, odd -> even * odd })
             .log()
-
         StepVerifier.create(fluxOfIntegers)
             .expectNext(2)  // 2 * 1
             .expectNext(12) // 4 * 3
@@ -88,24 +84,26 @@ class ReactiveTest {
     }
 
     companion object {
-        private val words = Arrays.asList(
-            "the",
-            "quick",
-            "brown",
-            "fox",
-            "jumped",
-            "over",
-            "the",
-            "lazy",
-            "dog"
+        private val WORDS = Flux.fromIterable<String>(
+            Arrays.asList(
+                "the",
+                "quick",
+                "brown",
+                "fox",
+                "jumped",
+                "over",
+                "the",
+                "lazy",
+                "dog"
+            )
         )
 
-        val evenNumbers = Flux
+        val EVEN_INT_FLUX = Flux
             .range(1, 5)
-            .filter { x -> x!! % 2 == 0 } // i.e. 2, 4
+            .filter { x -> x!! % 2 == 0 }!! // i.e. 2, 4
 
-        val oddNumbers = Flux
+        val ODD_INT_FLUX = Flux
             .range(1, 5)
-            .filter { x -> x!! % 2 > 0 }  // ie. 1, 3, 5
+            .filter { x -> x!! % 2 > 0 }!!  // ie. 1, 3, 5
     }
 }
