@@ -43,8 +43,7 @@ class ReactiveTest {
 
     @Test
     fun findingMissingLetter() {
-        val manyLetters = Flux
-            .fromIterable(WORDS)
+        val manyLetters = WORDS
             //.log()
             .flatMap { word ->
                 val x = word.split("")
@@ -64,8 +63,10 @@ class ReactiveTest {
         StepVerifier.create(manyLetters)
             .expectNext(" 1. ")
             .expectNext(" 2. a")
-            .expectNextCount(23)
-            .expectNext("26. z")
+            .expectNextCount(16)
+            .consumeNextWith { println("should be r: '$it'") }
+            .consumeNextWith { println("should be t: '$it'") } // s is missing
+            .expectNextCount(6)
             .expectComplete()
             .verify()
     }
@@ -74,11 +75,11 @@ class ReactiveTest {
     fun givenFluxes_thenZipWith() {
         val fluxOfIntegers = EVEN_INT_FLUX
             .log()
-            .zipWith(ODD_INT_FLUX, BiFunction<Int, Int, Int> { even, odd -> even * odd })
+            .zipWith(ODD_INT_FLUX, BiFunction<Int, Int, String> { even, odd -> "$even*$odd=${even * odd}" })
             .log()
         StepVerifier.create(fluxOfIntegers)
-            .expectNext(2)  // 2 * 1
-            .expectNext(12) // 4 * 3
+            .expectNext("2*1=2")  // 2 * 1
+            .expectNext("4*3=12") // 4 * 3
             .expectComplete()
             .verify()
     }
