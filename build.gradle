@@ -31,7 +31,8 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1"
-
+    compile "com.github.librepdf:openpdf:1.2.10"
+    
     compile "io.projectreactor:reactor-core:3.1.4.RELEASE"
     testCompile "io.projectreactor:reactor-test:3.1.4.RELEASE"
 
