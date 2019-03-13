@@ -32,14 +32,14 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1"
     compile "com.github.librepdf:openpdf:1.2.10"
-    
     compile "io.projectreactor:reactor-core:3.1.4.RELEASE"
-    testCompile "io.projectreactor:reactor-test:3.1.4.RELEASE"
-
     compile group: 'ch.qos.logback', name:'logback-classic', version: '1.2.3'
     compile group: 'ch.qos.logback', name:'logback-core', version: '1.2.3'
+    implementation "io.github.microutils:kotlin-logging:1.6.20"
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile "io.projectreactor:reactor-test:3.1.4.RELEASE"
+
 }
 
 compileKotlin {
