@@ -3,12 +3,28 @@ package de.stf.play.ground.test
 import com.lowagie.text.Document
 import com.lowagie.text.DocumentException
 import com.lowagie.text.Element
+import com.lowagie.text.PageSize
 import com.lowagie.text.Paragraph
 import com.lowagie.text.Phrase
-import com.lowagie.text.alignment.HorizontalAlignment
-import com.lowagie.text.pdf.PdfPCell
+import com.lowagie.text.Rectangle
+import com.lowagie.text.pdf.ColumnText
 import com.lowagie.text.pdf.PdfPTable
+import com.lowagie.text.pdf.PdfPageEventHelper
 import com.lowagie.text.pdf.PdfWriter
+import com.lowagie.text.pdf.draw.LineSeparator
+import de.stf.play.ground.PDFExtensionFunctions.COLOR_EVEN
+import de.stf.play.ground.PDFExtensionFunctions.COLOR_ODD
+import de.stf.play.ground.PDFExtensionFunctions.FONT_BOLD
+import de.stf.play.ground.PDFExtensionFunctions.FONT_CODE
+import de.stf.play.ground.PDFExtensionFunctions.FONT_HEADER
+import de.stf.play.ground.PDFExtensionFunctions.FONT_ITALIC
+import de.stf.play.ground.PDFExtensionFunctions.FONT_TEXT
+import de.stf.play.ground.PDFExtensionFunctions.FONT_TEXTBOLD
+import de.stf.play.ground.PDFExtensionFunctions.FONT_TEXTSMALL
+import de.stf.play.ground.PDFExtensionFunctions.createCell
+import de.stf.play.ground.addTextCell
+import de.stf.play.ground.defaultPadding
+import jdk.nashorn.tools.Shell.SUCCESS
 import org.junit.After
 import org.junit.AfterClass
 import org.junit.Assert
@@ -19,6 +35,8 @@ import java.awt.Color
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class OpenPDFTest {
     @Test
@@ -57,8 +75,17 @@ class OpenPDFTest {
     @Test
     fun simpleText() {
         executeTest("simpleText") { document ->
-            for (i: Int in 1..125) {
-                document.add(Paragraph("Hello World $i"))
+            with(document) {
+                for (i: Int in 1..125) {
+                    add(Paragraph("$i. Hello World"))
+                    if (i % 30 == 0) {
+                        newPage()
+                    } else
+                    if (i % 5 == 0) {
+                        add(Paragraph(" "))
+                        add(LineSeparator(0.2f, 85f, Color.BLUE, Element.ALIGN_CENTER, 3.5f))
+                    }
+                }
             }
         }
     }
@@ -95,49 +122,54 @@ class OpenPDFTest {
     @Test
     fun simpleTable() {
         executeTest("simpleTable") { document ->
-            val table = PdfPTable(3)
-            var cell = PdfPCell(Phrase("Cell with colspan 3"))
-            with(cell) {
-                colspan = 3
-                backgroundColor = Color.GRAY
+            val table = PdfPTable(4)
+            // Headers and Footers
+            with(
+                createCell(
+                    "Header -- Cell with colspan 4",
+                    font = FONT_HEADER,
+                    bgColor = Color.GRAY
+                )
+            ) {
+                colspan = 4
                 defaultPadding()
-                horizontalAlignment = HorizontalAlignment.CENTER.id
+                horizontalAlignment = Element.ALIGN_CENTER
+                table.addCell(this)
             }
-            table.addCell(cell)
-            cell = PdfPCell(Phrase("Cell with rowspan 2")).defaultPadding()
-            cell.rowspan = 2
-            cell.backgroundColor = Color.LIGHT_GRAY
-            table.addCell(cell)
-            document.add(
-                table.addTextCell("R1, C1")
-                    .addTextCell("R1, C2", HorizontalAlignment.RIGHT.id)
-                    .addTextCell("R2,\nC1")
-                    .addTextCell("R2, C2", HorizontalAlignment.CENTER.id)
-            )
+            with(createCell("Cell with rowspan 2", bgColor = Color.LIGHT_GRAY)) {
+                defaultPadding()
+                rowspan = 2
+                colspan = 2
+                setLeading(25f, 0f)
+                table.addCell(this)
+            }
+            with(table) {
+                setWidths(intArrayOf(12, 50, 24, 24))
+                addTextCell("R1, C1")
+                addTextCell("R1, C2", Element.ALIGN_RIGHT)
+                addTextCell("R2,\nC1")
+                addTextCell("R2, C2", Element.ALIGN_CENTER)
+                for(i in 1..2) {
+                    addTextCell("Number", font = FONT_BOLD, bgColor = Color.LIGHT_GRAY)
+                    addTextCell("Column 1", hAlign = Element.ALIGN_RIGHT, font = FONT_BOLD, bgColor = Color.LIGHT_GRAY)
+                    addTextCell("Column 2", hAlign = Element.ALIGN_CENTER, font = FONT_BOLD, bgColor = Color.LIGHT_GRAY)
+                    addTextCell("Column 3", hAlign = Element.ALIGN_LEFT, font = FONT_BOLD, bgColor = Color.LIGHT_GRAY)
+                }
+                headerRows = 5
+                footerRows = 1
+            }
+
+            // Content
+            for (i in 3..202) {
+                val bg = if (i % 2 == 0) COLOR_EVEN else COLOR_ODD
+                table
+                    .addTextCell("${i - 2}.", font = FONT_ITALIC, bgColor = bg)
+                    .addTextCell("R$i, C1", hAlign = Element.ALIGN_RIGHT, font = FONT_TEXT, bgColor = bg)
+                    .addTextCell("R$i, C2", hAlign = Element.ALIGN_CENTER, font = FONT_TEXTBOLD, bgColor = bg)
+                    .addTextCell("R$i, C3", hAlign = Element.ALIGN_LEFT, font = FONT_CODE, bgColor = bg)
+            }
+            document.add(table)
         }
-    }
-
-    // -----------------------------------------------------------------------------------------------
-    // Helper functions
-    // -----------------------------------------------------------------------------------------------
-    private fun PdfPTable.addTextCell(text: String,
-        hAlign: Int = HorizontalAlignment.LEFT.id): PdfPTable {
-        addCell(createCell(text, hAlign))
-        return this
-    }
-
-    private fun createCell(text: String, hAlign: Int = HorizontalAlignment.LEFT.id): PdfPCell {
-        val cell = PdfPCell(Phrase(text)).defaultPadding()
-        cell.horizontalAlignment = hAlign
-        return cell
-    }
-
-    private fun PdfPCell.defaultPadding(): PdfPCell {
-        paddingTop = 1f
-        paddingBottom = 5f
-        paddingLeft = 5f
-        paddingRight = 5f
-        return this
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -145,12 +177,19 @@ class OpenPDFTest {
     // -----------------------------------------------------------------------------------------------
     private fun executeTest(testName: String, pdfCreator: (document: Document) -> Unit) {
         val document = Document() // step 1: creation of a document-object
+        with(document) {
+            pageSize = PageSize.A4
+            left(16f)
+            setMargins(0f, 0f, 36f, 36f)
+        }
         val pdfFile = File("$BASEDIR/$testName.pdf")
         try {
             // step 2:
             // we create a writer that listens to the document
             // and directs a PDF-stream to a file
-            PdfWriter.getInstance(document, FileOutputStream(pdfFile))
+            val writer = PdfWriter.getInstance(document, FileOutputStream(pdfFile))
+            writer.setBoxSize("art", Rectangle(50f, 50f, 545f, 792f))
+            writer.pageEvent = HeaderFooter(testName)
             // step 3: we open the document
             with(document) {
                 open()
@@ -170,8 +209,10 @@ class OpenPDFTest {
         val successful = pdfFile.exists() && pdfFile.isFile
         if (SUCCESS) SUCCESS = successful
         Assert.assertTrue("### PDF file '$pdfFile' not created", successful)
-        Assert.assertTrue("### PDF file '$pdfFile' content not created",
-            pdfFile.length() > 890)
+        Assert.assertTrue(
+            "### PDF file '$pdfFile' content not created",
+            pdfFile.length() > 890
+        )
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -180,9 +221,6 @@ class OpenPDFTest {
     @Before
     fun setup() {
         println("*** setup test")
-        // Thread.currentThread().stackTrace.iterator().forEach {
-        //    println("    ${it.className}.${it.methodName} (line ${it.lineNumber})")
-        // }
     }
 
     @After
@@ -213,6 +251,37 @@ class OpenPDFTest {
         @AfterClass
         fun teardownAfterClass() {
             println("*** class teardown $javaClass")
+        }
+    }
+}
+
+class HeaderFooter(val testName: String) : PdfPageEventHelper() {
+    val headers = arrayOf(Phrase(""), Phrase(""), Phrase(""))
+    var pagenumber = 0
+
+    override fun onOpenDocument(writer: PdfWriter?, document: Document?) {
+        headers[0] = Phrase("*** UnitTest '$testName' ***", FONT_TEXT) // Top centered
+        headers[1] = Phrase("Created at ${SimpleDateFormat("dd.MM.yyy hh:mm:ss").format(Date())}",
+            FONT_TEXTSMALL) // Bottom left
+    }
+
+    override fun onStartPage(writer: PdfWriter?, document: Document?) {
+        pagenumber++
+    }
+
+    override fun onEndPage(writer: PdfWriter?, document: Document?) {
+        val rect = writer?.getBoxSize("art")
+        if(rect != null) {
+            headers[2] = Phrase("Page $pagenumber", FONT_TEXTSMALL) // Bottom right
+            // print Header top, centered (title)
+            ColumnText.showTextAligned(writer.directContent, Element.ALIGN_CENTER,
+                headers[0], (rect.left + rect.right) / 2, rect.top + 25,0f)
+            // print Footer bottom, left (date)
+            ColumnText.showTextAligned(writer.directContent, Element.ALIGN_LEFT,
+                headers[1], rect.left, rect.bottom - 25,0f)
+            // print Footer bottom, left (date)
+            ColumnText.showTextAligned(writer.directContent, Element.ALIGN_RIGHT,
+                headers[2], rect.right + 25, rect.bottom - 15,45f)
         }
     }
 }
