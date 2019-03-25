@@ -7,7 +7,7 @@ data class Type1(
     var field1: String?, // copied
     var field3: Type2?, // copied
     var field4: IntArray? // copied
-) {
+): TypeInterface, AbstractType() {
     var forcedUpdate: List<String>? = null
     var field2: String? = null // copied
     var field5: String? = "Field5" // not copied -> same name but different type

@@ -9,7 +9,7 @@ data class Type2(
     var field4: IntArray?,
     var field5: Int?,
     val field6: Long?
-) {
+): AbstractType() {
     var field7: Long? = 0
     var field8: Date? = Date()
     val field9: String? = "Unable to change me"

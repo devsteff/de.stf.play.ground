@@ -23,7 +23,11 @@ import de.stf.play.ground.PDFExtensionFunctions.FONT_TEXTBOLD
 import de.stf.play.ground.PDFExtensionFunctions.FONT_TEXTSMALL
 import de.stf.play.ground.PDFExtensionFunctions.createCell
 import de.stf.play.ground.addTextCell
+import de.stf.play.ground.data.Type1
+import de.stf.play.ground.data.Type2
+import de.stf.play.ground.data.Type3
 import de.stf.play.ground.defaultPadding
+import de.stf.play.ground.testRefied
 import jdk.nashorn.tools.Shell.SUCCESS
 import org.junit.After
 import org.junit.AfterClass
@@ -35,10 +39,22 @@ import java.awt.Color
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.Date
 
 class OpenPDFTest {
+    @Test
+    //@DisplayName("This is my test")
+    //@Tag("It is my tag")
+    fun testRefied() {
+        PdfPTable(1).testRefied<String>()
+        PdfPTable(1).testRefied<List<Int>>()
+        PdfPTable(1).testRefied<Type1>()
+        PdfPTable(1).testRefied<Type2>()
+        PdfPTable(1).testRefied<Type3>()
+    }
+
     @Test
     //@DisplayName("This is my test")
     //@Tag("It is my tag")
@@ -238,7 +254,7 @@ class OpenPDFTest {
         @JvmStatic
         @BeforeClass
         fun setupBeforeClass() {
-            println("*** class setup $javaClass")
+            println("*** class setup ${OpenPDFTest::class.java}")
             if (BASEDIR.exists()) {
                 BASEDIR.deleteRecursively()
                 println("*** class cleanup $BASEDIR")
@@ -250,7 +266,7 @@ class OpenPDFTest {
         @JvmStatic
         @AfterClass
         fun teardownAfterClass() {
-            println("*** class teardown $javaClass")
+            println("*** class teardown ${OpenPDFTest::class.java}")
         }
     }
 }

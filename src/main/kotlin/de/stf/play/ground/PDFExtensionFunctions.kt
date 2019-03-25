@@ -9,7 +9,11 @@ import com.lowagie.text.pdf.PdfPCell
 import com.lowagie.text.pdf.PdfPTable
 import de.stf.play.ground.PDFExtensionFunctions.FONT_NORMAL
 import de.stf.play.ground.PDFExtensionFunctions.createCell
+import de.stf.play.ground.data.AbstractType
+import de.stf.play.ground.data.Type1
+import de.stf.play.ground.data.TypeInterface
 import java.awt.Color
+import kotlin.reflect.full.isSubclassOf
 
 object PDFExtensionFunctions {
     val FONT_CODE: Font = FontFactory.getFont(FontFactory.COURIER, "UTF-8", 9f)
@@ -59,3 +63,29 @@ internal fun PdfPCell.defaultPadding(): PdfPCell = apply {
     paddingLeft = 5f
     paddingRight = 5f
 }
+
+inline fun <reified T> PdfPTable.testRefied() =
+    when {
+        T::class == Type1::class -> {
+            println("exact type ${T::class}, ${T::class.java}, " +
+                "typeparams=${T::class.typeParameters}")
+            }
+
+        T::class.isSubclassOf(AbstractType::class) ->
+            println("subclass of AbstractType ${T::class}, ${T::class.java}, " +
+                "typeparams=${T::class.typeParameters}")
+
+        T::class.isSubclassOf(TypeInterface::class) ->
+            println("implements TypeInterface ${T::class}, ${T::class.java}, " +
+                "typeparams=${T::class.typeParameters}")
+
+        T::class.isSubclassOf(Collection::class) ->
+            println("collection type $${T::class}, ${T::class.java}, " +
+                "typeparams=[${T::class.typeParameters[0].variance}, " +
+                "${T::class.typeParameters[0].name}, " +
+                "${T::class.typeParameters[0].isReified}, " +
+                "${T::class.typeParameters[0].upperBounds}]")
+
+        else ->
+            println("default type ${T::class}, ${T::class.java}, ${T::class.qualifiedName}")
+    }

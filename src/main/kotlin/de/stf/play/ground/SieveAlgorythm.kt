@@ -13,7 +13,7 @@ class SieveAlgorythm() {
         const val noOfPrimes = 200000
     }
 
-    fun main(args: Array<String>) {
+    fun main() {
         val sieves: Array<Array<Boolean>> = arrayOf(arrayOf(), arrayOf(), arrayOf())
         val simple = measureTimeMillis {
             sieves[0] = sieveSimple(noOfPrimes)
