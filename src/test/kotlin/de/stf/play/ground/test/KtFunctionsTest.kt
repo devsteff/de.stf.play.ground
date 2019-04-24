@@ -196,6 +196,13 @@ class KtFunctionsTest {
         assertEquals(2, less250.size)
     }
 
+    @Test
+    fun listTo() {
+        val x = listOf("a","b") to listOf(1,2,3)
+        val y = mapOf<List<String>, List<Int>>(x)
+        println(y)
+    }
+
     companion object {
         const val xxx = "aa,ba,ca"
         val zzz = listOf("aa", "ba", "ca").joinToString(",", "", "", 100, "")
