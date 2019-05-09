@@ -203,6 +203,20 @@ class KtFunctionsTest {
         println(y)
     }
 
+    @Test
+    fun pairDeconstructing() {
+        val (a, b) = testPair
+        assertEquals("a", a)
+        assertEquals(4711, b)
+    }
+
+    @Test
+    fun tripleDeconstructing() {
+        val (a, _, b) = testTriple
+        assertEquals("a", a)
+        assertEquals(true, b)
+    }
+
     companion object {
         const val xxx = "aa,ba,ca"
         val zzz = listOf("aa", "ba", "ca").joinToString(",", "", "", 100, "")
@@ -222,6 +236,8 @@ class KtFunctionsTest {
             "d" to Product("C", 400),
             "e" to Product("C", 500)
         )
+        val testPair = "a" to 4711
+        val testTriple = Triple("a", 4711, true)
     }
 }
 
