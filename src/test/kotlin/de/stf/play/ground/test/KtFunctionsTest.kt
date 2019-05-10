@@ -217,7 +217,35 @@ class KtFunctionsTest {
         assertEquals(true, b)
     }
 
+    @Test
+    fun functionPassiningTest() {
+        val result = fooFunction("hi there", ::buzFunction)
+        assertEquals("ereht ih", result)
+
+        val result1 = fooFunction("hi there") { m ->
+            println("this is the second way of calling: $m")
+            m.reversed()
+        }
+        assertEquals("ereht ih", result1)
+
+        val result2 = fooFunction("hi there") {
+            println("this is the third way of calling: $it")
+            it.reversed()
+        }
+        assertEquals("ereht ih", result2)
+    }
+
     companion object {
+        fun fooFunction(p1: String, anyFunction: (m: String) -> String): String {
+            return anyFunction(p1)
+        }
+
+        // my function to pass into the other
+        fun buzFunction(m: String): String {
+            println("this is the first way of calling: $m")
+            return m.reversed()
+        }
+
         const val xxx = "aa,ba,ca"
         val zzz = listOf("aa", "ba", "ca").joinToString(",", "", "", 100, "")
         val yyy = zzz
