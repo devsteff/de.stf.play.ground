@@ -277,7 +277,7 @@ class KtFunctionsTest {
     fun enclosingMethodTest() {
         val apiName = "${javaClass.name}#${object {}.javaClass.enclosingMethod.name}"
         assertEquals("de.stf.play.ground.test.KtFunctionsTest#enclosingMethodTest", apiName)
-        println("enclosing method is $apiName)
+        println("enclosing method is $apiName")
     }
 
     companion object {
