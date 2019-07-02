@@ -1,9 +1,12 @@
 package de.stf.play.ground.test
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.math.BigDecimal
+import java.util.Date
+import kotlin.random.Random
 
 class KtFunctionsTest {
 
@@ -141,7 +144,7 @@ class KtFunctionsTest {
     fun companionTest() {
         val xxx = listOf("aa", "ba", "ca").joinToString(",", "", "", 100, "")
         assertEquals("local var", "aa,ba,ca", xxx)
-        assertEquals("companion const", "aa,ba,ca", Companion.xxx)
+        assertEquals("companion const", "aa,ba,ca", Companion.XXX)
         assertEquals("companion val", xxx, yyy)
         assertEquals("companion val", xxx, zzz)
         assertTrue("in", "ba" in xxx)
@@ -191,14 +194,14 @@ class KtFunctionsTest {
 
     @Test
     fun partitionObjectListTest() {
-        val (from250, less250) = PRODUCT_LIST.partition {  it.quantity >= 250 }
+        val (from250, less250) = PRODUCT_LIST.partition { it.quantity >= 250 }
         assertEquals(3, from250.size)
         assertEquals(2, less250.size)
     }
 
     @Test
     fun listTo() {
-        val x = listOf("a","b") to listOf(1,2,3)
+        val x = listOf("a", "b") to listOf(1, 2, 3)
         val y = mapOf<List<String>, List<Int>>(x)
         println(y)
     }
@@ -235,6 +238,48 @@ class KtFunctionsTest {
         assertEquals("ereht ih", result2)
     }
 
+    @Test
+    fun shuffleTest() {
+        val words = mutableListOf<String>()
+        words.addAll(SENTENCE.split(' '))
+        val shuffeldWords = mutableListOf<String>()
+        shuffeldWords.addAll(SENTENCE.split(' '))
+        shuffeldWords.shuffle(Random(Date().time))
+        println("$words shuffeled to $shuffeldWords")
+        assertNotEquals(words, shuffeldWords)
+    }
+
+    @Test
+    fun stillReadableTest() {
+        val words = mutableListOf<String>()
+        val newWords = mutableListOf<String>()
+        words.addAll(SENTENCE.split(' '))
+        words.forEach { newWords.add(it.stillReadable()) }
+        println("$words\nstill readable as:\n$newWords")
+        assertNotEquals(words, newWords)
+    }
+
+    private fun String.stillReadable(): String {
+        if (this.length < 4) return this
+        else {
+            val first = this.first()
+            val last = this.last()
+            val shuffled = mutableListOf<Char>()
+            val chars = this.substring(1, this.length - 1).toList()
+            shuffled.addAll(chars)
+            shuffled.shuffle(Random(Date().time))
+            val newShuffled = shuffled.joinToString { "$it" }
+            return first + newShuffled + last
+        }
+    }
+
+    @Test
+    fun enclosingMethodTest() {
+        val apiName = "${javaClass.name}#${object {}.javaClass.enclosingMethod.name}"
+        assertEquals("de.stf.play.ground.test.KtFunctionsTest#enclosingMethodTest", apiName)
+        println("enclosing method is $apiName)
+    }
+
     companion object {
         fun fooFunction(p1: String, anyFunction: (m: String) -> String): String {
             return anyFunction(p1)
@@ -246,7 +291,8 @@ class KtFunctionsTest {
             return m.reversed()
         }
 
-        const val xxx = "aa,ba,ca"
+        const val XXX = "aa,ba,ca"
+        const val SENTENCE = "The quick brown fox jumps over the lazy dog"
         val zzz = listOf("aa", "ba", "ca").joinToString(",", "", "", 100, "")
         val yyy = zzz
         val NUMBER_LIST = listOf(1, 2, 3, 4, 5)
