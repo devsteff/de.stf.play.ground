@@ -56,7 +56,6 @@ internal fun PdfPTable.addTextCell(text: String,
         addCell(createCell(text, hAlign, font, color, bgColor))
     }
 
-
 internal fun PdfPCell.defaultPadding(): PdfPCell = apply {
     paddingTop = 1f
     paddingBottom = 5f

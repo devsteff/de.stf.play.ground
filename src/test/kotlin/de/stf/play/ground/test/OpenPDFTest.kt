@@ -28,7 +28,6 @@ import de.stf.play.ground.data.Type2
 import de.stf.play.ground.data.Type3
 import de.stf.play.ground.defaultPadding
 import de.stf.play.ground.testRefied
-import jdk.nashorn.tools.Shell.SUCCESS
 import org.junit.After
 import org.junit.AfterClass
 import org.junit.Assert
@@ -39,7 +38,6 @@ import java.awt.Color
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.Date
 

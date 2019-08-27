@@ -109,10 +109,10 @@ class ReactiveTest {
 
         val EVEN_INT_FLUX = Flux
             .range(1, 5)
-            .filter { x -> x!! % 2 == 0 }!! // i.e. 2, 4
+            .filter { x -> x!! % 2 == 0 } // i.e. 2, 4
 
         val ODD_INT_FLUX = Flux
             .range(1, 5)
-            .filter { x -> x!! % 2 > 0 }!!  // ie. 1, 3, 5
+            .filter { x -> x!! % 2 > 0 }  // ie. 1, 3, 5
     }
 }
