@@ -1,32 +1,33 @@
-package de.stf.play.ground.test
+package de.stf.play.ground
 
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.internal.LinkedTreeMap
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class BsonTest {
 
     @Test
     fun test1() {
         val res= handleIt<Any>()
-        assertEquals("Any",  LinkedTreeMap::class.java, res?.javaClass)
+        assertEquals(LinkedTreeMap::class.java, res?.javaClass,"Any")
         println("${res?.javaClass}=$res")
     }
 
     @Test
     fun test2() {
         val res= handleIt<JsonObject>()
-        assertEquals("JsonElement", JsonObject::class.java, res?.javaClass)
+        assertEquals(JsonObject::class.java, res?.javaClass, "JsonElement")
         println("${res?.javaClass}=$res")
     }
 
     @Test
     fun test3() {
-        val res= handleIt<List<LinkedTreeMap<String, String>>>(true)
-        assertEquals("String", ArrayList::class.java, res?.javaClass)
+        val res=
+            handleIt<List<LinkedTreeMap<String, String>>>(true)
+        assertEquals(ArrayList::class.java, res?.javaClass, "String")
         println("${res?.javaClass}=$res")
     }
 

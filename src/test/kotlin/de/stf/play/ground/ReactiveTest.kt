@@ -1,9 +1,13 @@
-package de.stf.play.ground.test
+package de.stf.play.ground
 
 import mu.KotlinLogging
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Signal
 import reactor.test.StepVerifier
+import java.awt.image.DataBuffer
+import java.security.MessageDigest
 import java.util.Arrays
 import java.util.function.BiFunction
 
@@ -92,6 +96,30 @@ class ReactiveTest {
             .verify()
     }
 
+//    @Test
+//    fun testMD5WithSmallBuffer() {
+//        val testString = "someRandomContentToTesteee"
+//        val contentHashing =
+//            ContentHashing.hashing(testString.toDataBufferFlux())
+//        StepVerifier.create(contentHashing.first)
+//            .expextNextMatches {
+//                String(it.asInputStream(true).readBytes()) == "someRandomCo"
+//            }
+//            .expextNextMatches {
+//                String(it.asInputStream(true).readBytes()) == "ntentToTeste"
+//            }
+//            .expextNextMatches {
+//                String(it.asInputStream(true).readBytes()) == "ee"
+//            }
+//            .verifyComplete()
+//        assertEquals(contentHashing.seconf.md5, DigestUtils.md5Hex(testString))
+//
+//        fun String.toDataBufferFlux() : Flux<DataBuffer> =
+//            DataBufferUtils.readInputStream( { byteInputStream() },
+//                DefaultDataBufferFactory(), 12)
+//    }
+
+
     companion object {
         private val WORDS = Flux.fromIterable<String>(
             Arrays.asList(
@@ -116,3 +144,18 @@ class ReactiveTest {
             .filter { x -> x!! % 2 > 0 }  // ie. 1, 3, 5
     }
 }
+
+//class ContentHashing private constructor() {
+//    lateinit var md5: String
+//    companion object {
+//        fun hashing(source: Flux<DataBuffer>) : Pair<Flux<DataBuffer>>, ContentHashing> {
+//            val contentHashing = ContentHashing()
+//            val digest = MessageDigest.getInstance("MD5")
+//            return source.doOnEach { t: Signal<DataBuffer> ->
+//                t.get()?.apply { digest.update(asByteBuffer()) }
+//            }.doOnComplete {
+//                contentHashing.md5 = Hex.encodeHexString(digest.digest())
+//            } to contentHashing
+//        }
+//    }
+//}

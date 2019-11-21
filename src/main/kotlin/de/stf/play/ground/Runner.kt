@@ -2,7 +2,7 @@ package de.stf.play.ground
 
 import de.stf.play.ground.data.Type1
 import de.stf.play.ground.data.Type2
-import de.stf.play.ground.test.UpdateHelper
+import de.stf.play.ground.UpdateHelper
 
 fun main(args: Array<String>) {
     println("\n\n1 to 1\n----------------------------------------------------")

@@ -1,8 +1,8 @@
-package de.stf.play.ground.test
+package de.stf.play.ground
 
-import de.stf.play.ground.SieveAlgorythm
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import kotlin.system.measureTimeMillis
 
 class SieveAlgorythmTest {
@@ -11,30 +11,30 @@ class SieveAlgorythmTest {
     fun simple() {
         val result = SieveAlgorythm().sieveSimple(SieveAlgorythm.noOfPrimes)
         val primes = result.filter { it }
-        Assert.assertEquals("Primzahlen falsch ermittelt", primes.size, 17986)
+        assertEquals(primes.size, 17986, "Primzahlen falsch ermittelt")
     }
 
     @Test
     fun coroutines() {
         val result = SieveAlgorythm().sieveCoroutines(SieveAlgorythm.noOfPrimes)
         val primes = result.filter { it }
-        Assert.assertEquals("Primzahlen falsch ermittelt", primes.size, 17986)
+        assertEquals(primes.size, 17986, "Primzahlen falsch ermittelt")
     }
 
     @Test
     fun sharedMutableState() {
         val result = SieveAlgorythm().sieveSharedMutableState(SieveAlgorythm.noOfPrimes)
         val primes = result.filter { it }
-        Assert.assertEquals("Primzahlen falsch ermittelt", primes.size, 17986)
+        assertEquals(primes.size, 17986, "Primzahlen falsch ermittelt")
     }
 
     @Test
     fun performnce() {
         val simple = measureTimeMillis { SieveAlgorythm().sieveSimple(SieveAlgorythm.noOfPrimes) }
         val coroutine = measureTimeMillis { SieveAlgorythm().sieveCoroutines(SieveAlgorythm.noOfPrimes) }
-        Assert.assertTrue("Expected simple is faster than coroutine", simple < coroutine)
+        assertTrue(simple < coroutine, "Expected simple is faster than coroutine")
         val shared = measureTimeMillis { SieveAlgorythm().sieveSharedMutableState(SieveAlgorythm.noOfPrimes) }
-        Assert.assertTrue("Expected shared is faster than coroutine", shared < coroutine)
-        Assert.assertTrue("Expected shared is faster than simple", shared < simple)
+        assertTrue(shared < coroutine, "Expected shared is faster than coroutine")
+        assertTrue(shared < simple, "Expected shared is faster than simple")
     }
 }

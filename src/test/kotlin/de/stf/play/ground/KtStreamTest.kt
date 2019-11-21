@@ -1,9 +1,10 @@
-package de.stf.play.ground.test
+package de.stf.play.ground
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class KtStreamTest {
+
     @Test
     fun mapAndFilterTest() {
         val collect = STRING_LIST // Stream of String
@@ -71,7 +72,10 @@ class KtStreamTest {
                 Customer(1, "Amos", 23),
                 Address("E NAVAHO TRL", "77449")
             ),
-            Pair(Customer(4, "Craig", 45), Address("AVE N", "77587"))
+            Pair(
+                Customer(4, "Craig", 45),
+                Address("AVE N", "77587")
+            )
         )
     }
 }

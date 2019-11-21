@@ -1,9 +1,9 @@
-package de.stf.play.ground.test
+package de.stf.play.ground
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.util.Date
 import kotlin.random.Random
@@ -43,9 +43,9 @@ class KtFunctionsTest {
     fun elvisTest() {
         fun String?.orEmpty() = "=\"${this ?: " "}\""
         val toTest: String? = null
-        assertEquals("oops", "=\"\"", "".orEmpty())
-        assertEquals("oops", "=\"1\"", "1".orEmpty())
-        assertEquals("oops", "=\" \"", toTest.orEmpty())
+        assertEquals("=\"\"", "".orEmpty(), "oops")
+        assertEquals("=\"1\"", "1".orEmpty(), "oops")
+        assertEquals("=\" \"", toTest.orEmpty(), "oops")
     }
 
     @Test
@@ -62,38 +62,38 @@ class KtFunctionsTest {
 
         val testStr = "abcdefghijklmnopqrstuvw"
 
-        assertEquals("under bound 1", testStr, testStr.trimmedTo(1))
-        assertEquals("under bound 1", testStr.length, testStr.trimmedTo(1).length)
+        assertEquals(testStr, testStr.trimmedTo(1), "under bound 1")
+        assertEquals(testStr.length, testStr.trimmedTo(1).length, "under bound 1")
 
-        assertEquals("min bound 5", "a...w", testStr.trimmedTo(5))
-        assertEquals("min bound 5", 5, testStr.trimmedTo(5).length)
+        assertEquals("a...w", testStr.trimmedTo(5), "min bound 5")
+        assertEquals(5, testStr.trimmedTo(5).length, "min bound 5")
 
-        assertEquals("min bound 5+1", "ab...w", testStr.trimmedTo(6))
-        assertEquals("min bound 5+1", 6, testStr.trimmedTo(6).length)
+        assertEquals("ab...w", testStr.trimmedTo(6), "min bound 5+1")
+        assertEquals(6, testStr.trimmedTo(6).length, "min bound 5+1")
 
-        assertEquals("min bound 5+2", "ab...vw", testStr.trimmedTo(7))
-        assertEquals("min bound 5+2", 7, testStr.trimmedTo(7).length)
+        assertEquals("ab...vw", testStr.trimmedTo(7), "min bound 5+2")
+        assertEquals(7, testStr.trimmedTo(7).length,"min bound 5+2")
 
-        assertEquals("middle odd", "abcd...tuvw", testStr.trimmedTo(11))
-        assertEquals("middle odd", 11, testStr.trimmedTo(11).length)
+        assertEquals("abcd...tuvw", testStr.trimmedTo(11),"middle odd")
+        assertEquals(11, testStr.trimmedTo(11).length,"middle odd")
 
-        assertEquals("middle even", "abcd...uvw", testStr.trimmedTo(10))
-        assertEquals("middle even", 10, testStr.trimmedTo(10).length)
+        assertEquals("abcd...uvw", testStr.trimmedTo(10),"middle even")
+        assertEquals( 10, testStr.trimmedTo(10).length,"middle even")
 
-        assertEquals("exact", testStr, testStr.trimmedTo(testStr.length))
-        assertEquals("exact", testStr.length, testStr.trimmedTo(testStr.length).length)
+        assertEquals(testStr, testStr.trimmedTo(testStr.length),"exact")
+        assertEquals( testStr.length, testStr.trimmedTo(testStr.length).length,"exact")
 
-        assertEquals("smaller than max", testStr, testStr.trimmedTo(100))
-        assertEquals("smaller than max", testStr.length, testStr.trimmedTo(100).length)
+        assertEquals( testStr, testStr.trimmedTo(100),"smaller than max")
+        assertEquals( testStr.length, testStr.trimmedTo(100).length,"smaller than max")
     }
 
     @Test
     fun bigDecimalTest() {
         val amount = BigDecimal(1000.00)
         var period = 33
-        assertEquals("rounded", 30, amount.div(BigDecimal(period)).toInt())
+        assertEquals( 30, amount.div(BigDecimal(period)).toInt(),"rounded")
         period = 10
-        assertEquals("rounded", 100, amount.div(BigDecimal(period)).toInt())
+        assertEquals( 100, amount.div(BigDecimal(period)).toInt(),"rounded")
     }
 
     @Test
@@ -105,7 +105,7 @@ class KtFunctionsTest {
             unitList += { result += "$i $j; " }
         }
         unitList.forEach { it() }
-        assertEquals("surprise1", "0 1; 1 2; 2 3; ", result)
+        assertEquals( "0 1; 1 2; 2 3; ", result,"surprise1")
 
         unitList.clear()
         var i = 0
@@ -115,7 +115,7 @@ class KtFunctionsTest {
             unitList += { result += "$i $it; " }
         }
         unitList.forEach { it() }
-        assertEquals("surprise2", "3 1; 3 2; 3 3; ", result)
+        assertEquals( "3 1; 3 2; 3 3; ", result,"surprise2")
 
         unitList.clear()
         i = 0
@@ -125,38 +125,38 @@ class KtFunctionsTest {
             unitList += { result += "$i $j; " }
         }
         unitList.forEach { it() }
-        assertEquals("surprise3", "3 1; 3 2; 3 3; ", result)
+        assertEquals( "3 1; 3 2; 3 3; ", result, "surprise3")
     }
 
     @Test
     fun sortTest() {
         val myList = listOf(5, 7, 1, 0, -5, 4, 9)
         val sortedList = myList.sortedBy { it }
-        assertEquals("sorted", listOf(-5, 0, 1, 4, 5, 7, 9), sortedList)
+        assertEquals( listOf(-5, 0, 1, 4, 5, 7, 9), sortedList,"sorted")
         val sortedDescendingList = myList.sortedByDescending { it }
-        assertEquals("sorted", listOf(9, 7, 5, 4, 1, 0, -5), sortedDescendingList)
+        assertEquals( listOf(9, 7, 5, 4, 1, 0, -5), sortedDescendingList,"sorted")
         val myStringList = listOf("abc", "zxy", "zab")
         val sortedStringList = myStringList.sortedBy { it[1] }
-        assertEquals("sorted", listOf("zab", "abc", "zxy"), sortedStringList)
+        assertEquals( listOf("zab", "abc", "zxy"), sortedStringList,"sorted")
     }
 
     @Test
     fun companionTest() {
         val xxx = listOf("aa", "ba", "ca").joinToString(",", "", "", 100, "")
-        assertEquals("local var", "aa,ba,ca", xxx)
-        assertEquals("companion const", "aa,ba,ca", Companion.XXX)
-        assertEquals("companion val", xxx, yyy)
-        assertEquals("companion val", xxx, zzz)
-        assertTrue("in", "ba" in xxx)
-        assertTrue("!in", "ab" !in xxx)
+        assertEquals( "aa,ba,ca", xxx,"local var")
+        assertEquals( "aa,ba,ca", XXX,"companion const")
+        assertEquals( xxx, yyy,"companion val")
+        assertEquals( xxx, zzz,"companion val")
+        assertTrue( "ba" in xxx,"in")
+        assertTrue( "ab" !in xxx,"!in")
     }
 
     @Test
     fun ifEmptyTest() {
         var in1 = ""
-        assertEquals("replacement expected", "abc", in1.ifEmpty { "abc" })
+        assertEquals("abc", in1.ifEmpty { "abc" },"replacement expected")
         in1 = "cba"
-        assertEquals("original value expected", "cba", in1.ifEmpty { "abc" })
+        assertEquals( "cba", in1.ifEmpty { "abc" },"original value expected")
     }
 
     @Test
@@ -222,7 +222,10 @@ class KtFunctionsTest {
 
     @Test
     fun functionPassiningTest() {
-        val result = fooFunction("hi there", ::buzFunction)
+        val result = fooFunction(
+            "hi there",
+            Companion::buzFunction
+        )
         assertEquals("ereht ih", result)
 
         val result1 = fooFunction("hi there") { m ->
@@ -276,7 +279,7 @@ class KtFunctionsTest {
     @Test
     fun enclosingMethodTest() {
         val apiName = "${javaClass.name}#${object {}.javaClass.enclosingMethod.name}"
-        assertEquals("de.stf.play.ground.test.KtFunctionsTest#enclosingMethodTest", apiName)
+        assertEquals("de.stf.play.ground.KtFunctionsTest#enclosingMethodTest", apiName)
         println("enclosing method is $apiName")
     }
 

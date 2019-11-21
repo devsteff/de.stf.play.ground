@@ -1,4 +1,4 @@
-package de.stf.play.ground.test
+package de.stf.play.ground
 
 import com.lowagie.text.Document
 import com.lowagie.text.DocumentException
@@ -22,18 +22,15 @@ import de.stf.play.ground.PDFExtensionFunctions.FONT_TEXT
 import de.stf.play.ground.PDFExtensionFunctions.FONT_TEXTBOLD
 import de.stf.play.ground.PDFExtensionFunctions.FONT_TEXTSMALL
 import de.stf.play.ground.PDFExtensionFunctions.createCell
-import de.stf.play.ground.addTextCell
 import de.stf.play.ground.data.Type1
 import de.stf.play.ground.data.Type2
 import de.stf.play.ground.data.Type3
-import de.stf.play.ground.defaultPadding
-import de.stf.play.ground.testRefied
-import org.junit.After
-import org.junit.AfterClass
-import org.junit.Assert
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import java.awt.Color
 import java.io.File
 import java.io.FileOutputStream
@@ -76,7 +73,7 @@ class OpenPDFTest {
         }
         // step 5: we close the document
         document.close()
-        Assert.assertTrue("### PDF file $pdfFile not created", pdfFile.exists())
+        assertTrue(pdfFile.exists(),"### PDF file $pdfFile not created")
     }
 
     @Test
@@ -222,22 +219,19 @@ class OpenPDFTest {
         document.close()
         val successful = pdfFile.exists() && pdfFile.isFile
         if (SUCCESS) SUCCESS = successful
-        Assert.assertTrue("### PDF file '$pdfFile' not created", successful)
-        Assert.assertTrue(
-            "### PDF file '$pdfFile' content not created",
-            pdfFile.length() > 890
-        )
+        assertTrue(successful, "### PDF file '$pdfFile' not created")
+        assertTrue(pdfFile.length() > 890, "### PDF file '$pdfFile' content not created")
     }
 
     // -----------------------------------------------------------------------------------------------
     // JUnit cycle functions for each testcase
     // -----------------------------------------------------------------------------------------------
-    @Before
+    @BeforeEach
     fun setup() {
         println("*** setup test")
     }
 
-    @After
+    @AfterEach
     fun teardown() {
         println("*** teardown test")
     }
@@ -250,7 +244,7 @@ class OpenPDFTest {
         var SUCCESS = true
 
         @JvmStatic
-        @BeforeClass
+        @BeforeAll
         fun setupBeforeClass() {
             println("*** class setup ${OpenPDFTest::class.java}")
             if (BASEDIR.exists()) {
@@ -262,7 +256,7 @@ class OpenPDFTest {
         }
 
         @JvmStatic
-        @AfterClass
+        @AfterAll
         fun teardownAfterClass() {
             println("*** class teardown ${OpenPDFTest::class.java}")
         }
